@@ -38,6 +38,22 @@
             background-color: #00FFAB;
             color: #121212;
         }
+        #fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            font-size: 1rem;
+            background-color: #00FFAB;
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #fullscreen-btn:hover {
+            background-color: #1F1F1F;
+            color: #00FFAB;
+        }
         p {
             font-size: 1.5rem;
             margin: 20px;
@@ -63,6 +79,7 @@
     </style>
 </head>
 <body>
+    <button id="fullscreen-btn" onclick="toggleFullscreen()">Toàn màn hình</button>
     <h1 id="number">Nhấn nút!</h1>
     <button onclick="pickNumber()">Chọn số</button>
     <button onclick="reset()">Làm mới</button>
@@ -161,20 +178,6 @@
                 }, intervalTime * 1000);
             }
         }
-    </script>
-</body>
-</html>      // Restart auto-pick with new interval
-                clearInterval(autoPickInterval);
-                autoPickInterval = setInterval(() => {
-                    if (availableNumbers.length === 0) {
-                        clearInterval(autoPickInterval); // Stop if no more numbers
-                        autoPickInterval = null;
-                    } else {
-                        pickNumber();
-                    }
-                }, intervalTime * 1000);
-            }
-        }
 
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
@@ -184,28 +187,6 @@
                     document.exitFullscreen();
                 }
             }
-        }
-    </script>
-</body>
-</html>        }
-
-        function toggleFullscreen() {
-            const elem = document.documentElement;
-            const icon = document.getElementById("fullscreen-icon");
-
-            if (!document.fullscreenElement) {
-                elem.requestFullscreen();
-                icon.setAttribute("d", "M6 6v5h2V8h3V6H6zm10 0v2h3v3h2V6h-5zM6 13H4v5h5v-2H6v-3zm14 3h-3v2h5v-5h-2v3z");
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                    icon.setAttribute("d", "M4 4h6V2H2v8h2V4zm16 0v6h2V2h-8v2h6zM4 20v-6H2v8h8v-2H4zm16-6v6h-6v2h8v-8h-2z");
-                }
-            }
-        }
-    </script>
-</body>
-</html>     isFullscreen = !isFullscreen;
         }
     </script>
 </body>
