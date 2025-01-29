@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Number Picker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- FontAwesome -->
     <style>
         body {
             margin: 0;
@@ -16,6 +17,7 @@
             background-color: #121212;
             color: #ffffff;
             font-family: 'Arial', sans-serif;
+            position: relative;
         }
         h1 {
             font-size: 5rem;
@@ -38,21 +40,22 @@
             background-color: #00FFAB;
             color: #121212;
         }
-        #fullscreen-btn {
+        #fullscreen-btn, #advanced-settings-btn {
             position: absolute;
             top: 10px;
-            right: 10px;
-            padding: 10px;
-            font-size: 1rem;
-            background-color: #00FFAB;
-            color: #121212;
+            font-size: 1.5rem;
+            padding: 5px 10px;
+            background: none;
             border: none;
-            border-radius: 5px;
+            color: #00FFAB;
             cursor: pointer;
         }
-        #fullscreen-btn:hover {
-            background-color: #1F1F1F;
-            color: #00FFAB;
+        #fullscreen-btn {
+            right: 10px;
+        }
+        #advanced-settings-btn {
+            left: 10px;
+            font-size: 1.8rem;
         }
         p {
             font-size: 1.5rem;
@@ -66,68 +69,91 @@
             max-width: 90%;
             word-wrap: break-word;
         }
-        #autopick-controls {
+        .controls {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-top: 10px;
         }
-        #interval {
+        .label {
             font-size: 1.2rem;
             font-weight: bold;
             color: #00FFAB;
         }
+        #advanced-settings {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
-    <button id="fullscreen-btn" onclick="toggleFullscreen()">Toàn màn hình</button>
+    <button id="advanced-settings-btn" onclick="toggleAdvancedSettings()">
+        <i class="fas fa-cogs"></i> <!-- Gear icon -->
+    </button>
+    <button id="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
     <h1 id="number">Nhấn nút!</h1>
     <button onclick="pickNumber()">Chọn số</button>
     <button onclick="reset()">Làm mới</button>
-    <div id="autopick-controls">
+
+    <div class="controls">
         <button onclick="toggleAutoPick()">Tự động chọn</button>
         <button onclick="changeInterval(-1)">-</button>
-        <span id="interval">3</span> giây
+        <span class="label" id="interval">3</span> giây
         <button onclick="changeInterval(1)">+</button>
     </div>
+
+    <div id="advanced-settings">
+        <div class="controls">
+            <span class="label">Pitch:</span>
+            <button onclick="changePitch(-0.1)">-</button>
+            <span class="label" id="pitch">2</span>
+            <button onclick="changePitch(0.1)">+</button>
+        </div>
+
+        <div class="controls">
+            <span class="label">Speed:</span>
+            <button onclick="changeSpeed(-0.1)">-</button>
+            <span class="label" id="speed">1.2</span>
+            <button onclick="changeSpeed(0.1)">+</button>
+        </div>
+    </div>
+
     <div id="history"></div>
 
     <script>
-        let availableNumbers = [...Array(90).keys()].map(n => n + 1); // Numbers 1-90
+        let availableNumbers = [...Array(90).keys()].map(n => n + 1);
         let history = [];
         let vietnameseVoice = null;
         let autoPickInterval = null;
-        let intervalTime = 3; // Default interval time in seconds
+        let intervalTime = 3;
+        let pitch = 2;
+        let speed = 1.2;
 
-        // Load available voices and select a cheerful Vietnamese voice
         function loadVoices() {
             const voices = window.speechSynthesis.getVoices();
             vietnameseVoice = voices.find(voice => voice.lang === 'vi-VN' && (voice.name.includes("Google") || voice.name.includes("happy")));
         }
-
-        // Load voices when available
         if (speechSynthesis.onvoiceschanged !== undefined) {
             speechSynthesis.onvoiceschanged = loadVoices;
         }
 
         function pickNumber() {
             if (availableNumbers.length === 0) {
-                document.getElementById("number").textContent = "Hết số rồi! Làm mới để bắt đầu lại.";
+                document.getElementById("number").textContent = "Hết số rồi!";
                 return;
             }
             let index = Math.floor(Math.random() * availableNumbers.length);
             let chosen = availableNumbers.splice(index, 1)[0];
             history.push(chosen);
 
-            // Update display
             document.getElementById("number").textContent = chosen;
             document.getElementById("history").textContent = `Lịch sử: ${history.join(', ')}`;
-
-            // Speak the number in Vietnamese
             speakNumber(chosen);
         }
 
         function reset() {
-            clearInterval(autoPickInterval); // Stop auto-picking when resetting
+            clearInterval(autoPickInterval);
             autoPickInterval = null;
             availableNumbers = [...Array(90).keys()].map(n => n + 1);
             history = [];
@@ -138,45 +164,52 @@
         function speakNumber(number) {
             const utterance = new SpeechSynthesisUtterance(number);
             utterance.lang = 'vi-VN';
-            utterance.pitch = 2.5; // Higher pitch for cheerful tone
-            utterance.rate = 1.2;  // Slightly faster speed
-            if (vietnameseVoice) {
-                utterance.voice = vietnameseVoice; // Use selected voice if available
-            }
+            utterance.pitch = pitch; 
+            utterance.rate = speed; 
+            if (vietnameseVoice) utterance.voice = vietnameseVoice;
             window.speechSynthesis.speak(utterance);
         }
 
         function toggleAutoPick() {
             if (autoPickInterval) {
-                clearInterval(autoPickInterval); // Stop auto-picking
+                clearInterval(autoPickInterval);
                 autoPickInterval = null;
             } else {
                 autoPickInterval = setInterval(() => {
                     if (availableNumbers.length === 0) {
-                        clearInterval(autoPickInterval); // Stop if no more numbers
-                        autoPickInterval = null;
-                    } else {
-                        pickNumber();
-                    }
-                }, intervalTime * 1000); // Use the interval time
-            }
-        }
-
-        function changeInterval(amount) {
-            intervalTime = Math.max(1, intervalTime + amount); // Prevent intervals less than 1 second
-            document.getElementById("interval").textContent = intervalTime;
-            if (autoPickInterval) {
-                // Restart auto-pick with new interval
-                clearInterval(autoPickInterval);
-                autoPickInterval = setInterval(() => {
-                    if (availableNumbers.length === 0) {
-                        clearInterval(autoPickInterval); // Stop if no more numbers
+                        clearInterval(autoPickInterval);
                         autoPickInterval = null;
                     } else {
                         pickNumber();
                     }
                 }, intervalTime * 1000);
             }
+        }
+
+        function changeInterval(amount) {
+            intervalTime = Math.max(1, intervalTime + amount);
+            document.getElementById("interval").textContent = intervalTime;
+            if (autoPickInterval) {
+                clearInterval(autoPickInterval);
+                autoPickInterval = setInterval(() => {
+                    if (availableNumbers.length === 0) {
+                        clearInterval(autoPickInterval);
+                        autoPickInterval = null;
+                    } else {
+                        pickNumber();
+                    }
+                }, intervalTime * 1000);
+            }
+        }
+
+        function changePitch(amount) {
+            pitch = Math.max(0, Math.min(2, pitch + amount)); // Cap to 2
+            document.getElementById("pitch").textContent = pitch.toFixed(1);
+        }
+
+        function changeSpeed(amount) {
+            speed = Math.max(0.5, Math.min(10, speed + amount)); // Limit between 0.5 and 10
+            document.getElementById("speed").textContent = speed.toFixed(1);
         }
 
         function toggleFullscreen() {
@@ -188,6 +221,24 @@
                 }
             }
         }
+
+        function toggleAdvancedSettings() {
+            const settings = document.getElementById("advanced-settings");
+            const btn = document.getElementById("advanced-settings-btn");
+            const isSettingsVisible = settings.style.display === "flex";
+            if (isSettingsVisible) {
+                settings.style.display = "none";
+                btn.innerHTML = '<i class="fas fa-cogs"></i>'; // Show gear icon
+            } else {
+                settings.style.display = "flex";
+                btn.innerHTML = '<i class="fas fa-times"></i>'; // Show X icon
+            }
+        }
+
+        // Ensure the settings are hidden on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById("advanced-settings").style.display = "none";
+        });
     </script>
 </body>
 </html>
