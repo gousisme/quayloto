@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Picker</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+        }
+        h1 {
+            font-size: 5rem;
+            margin: 20px;
+            color: #00FFAB;
+            text-shadow: 0px 0px 10px rgba(0, 255, 171, 0.7);
+        }
+        button {
+            background-color: #1F1F1F;
+            color: #00FFAB;
+            border: 2px solid #00FFAB;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #00FFAB;
+            color: #121212;
+        }
+        p {
+            font-size: 1.5rem;
+            margin: 20px;
+        }
+        #history {
+            margin-top: 30px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            text-align: center;
+            max-width: 90%;
+            word-wrap: break-word;
+        }
+        #autopick-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #interval {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00FFAB;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="number">Nhấn nút!</h1>
+    <button onclick="pickNumber()">Chọn số</button>
+    <button onclick="reset()">Làm mới</button>
+    <div id="autopick-controls">
+        <button onclick="toggleAutoPick()">Tự động chọn</button>
+        <button onclick="changeInterval(-1)">-</button>
+        <span id="interval">3</span> giây
+        <button onclick="changeInterval(1)">+</button>
+    </div>
+    <div id="history"></div>
+
+    <script>
+        let availableNumbers = [...Array(90).keys()].map(n => n + 1); // Numbers 1-90
+        let history = [];
+        let vietnameseVoice = null;
+        let autoPickInterval = null;
+        let intervalTime = 3; // Default interval time in seconds
+
+        // Load available voices and select a cheerful Vietnamese voice
+        function loadVoices() {
+            const voices = window.speechSynthesis.getVoices();
+            vietnameseVoice = voices.find(voice => voice.lang === 'vi-VN' && (voice.name.includes("Google") || voice.name.includes("happy")));
+        }
+
+        // Load voices when available
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        function pickNumber() {
+            if (availableNumbers.length === 0) {
+                document.getElementById("number").textContent = "Hết số rồi! Làm mới để bắt đầu lại.";
+                return;
+            }
+            let index = Math.floor(Math.random() * availableNumbers.length);
+            let chosen = availableNumbers.splice(index, 1)[0];
+            history.push(chosen);
+
+            // Update display
+            document.getElementById("number").textContent = chosen;
+            document.getElementById("history").textContent = `Lịch sử: ${history.join(', ')}`;
+
+            // Speak the number in Vietnamese
+            speakNumber(chosen);
+        }
+
+        function reset() {
+            clearInterval(autoPickInterval); // Stop auto-picking when resetting
+            autoPickInterval = null;
+            availableNumbers = [...Array(90).keys()].map(n => n + 1);
+            history = [];
+            document.getElementById("number").textContent = "Nhấn nút!";
+            document.getElementById("history").textContent = "";
+        }
+
+        function speakNumber(number) {
+            const utterance = new SpeechSynthesisUtterance(number);
+            utterance.lang = 'vi-VN';
+            utterance.pitch = 2.5; // Higher pitch for cheerful tone
+            utterance.rate = 1.2;  // Slightly faster speed
+            if (vietnameseVoice) {
+                utterance.voice = vietnameseVoice; // Use selected voice if available
+            }
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function toggleAutoPick() {
+            if (autoPickInterval) {
+                clearInterval(autoPickInterval); // Stop auto-picking
+                autoPickInterval = null;
+            } else {
+                autoPickInterval = setInterval(() => {
+                    if (availableNumbers.length === 0) {
+                        clearInterval(autoPickInterval); // Stop if no more numbers
+                        autoPickInterval = null;
+                    } else {
+                        pickNumber();
+                    }
+                }, intervalTime * 1000); // Use the interval time
+            }
+        }
+
+        function changeInterval(amount) {
+            intervalTime = Math.max(1, intervalTime + amount); // Prevent intervals less than 1 second
+            document.getElementById("interval").textContent = intervalTime;
+            if (autoPickInterval) {
+                // Restart auto-pick with new interval
+                clearInterval(autoPickInterval);
+                autoPickInterval = setInterval(() => {
+                    if (availableNumbers.length === 0) {
+                        clearInterval(autoPickInterval); // Stop if no more numbers
+                        autoPickInterval = null;
+                    } else {
+                        pickNumber();
+                    }
+                }, intervalTime * 1000);
+            }
+        }
+    </script>
+</body>
+</html>      // Restart auto-pick with new interval
+                clearInterval(autoPickInterval);
+                autoPickInterval = setInterval(() => {
+                    if (availableNumbers.length === 0) {
+                        clearInterval(autoPickInterval); // Stop if no more numbers
+                        autoPickInterval = null;
+                    } else {
+                        pickNumber();
+                    }
+                }, intervalTime * 1000);
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
+</body>
+</html>        }
+
+        function toggleFullscreen() {
+            const elem = document.documentElement;
+            const icon = document.getElementById("fullscreen-icon");
+
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen();
+                icon.setAttribute("d", "M6 6v5h2V8h3V6H6zm10 0v2h3v3h2V6h-5zM6 13H4v5h5v-2H6v-3zm14 3h-3v2h5v-5h-2v3z");
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    icon.setAttribute("d", "M4 4h6V2H2v8h2V4zm16 0v6h2V2h-8v2h6zM4 20v-6H2v8h8v-2H4zm16-6v6h-6v2h8v-8h-2z");
+                }
+            }
+        }
+    </script>
+</body>
+</html>     isFullscreen = !isFullscreen;
+        }
+    </script>
+</body>
+</html>
