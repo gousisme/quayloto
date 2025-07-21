@@ -1,131 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Number Picker</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- FontAwesome -->
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Arial', sans-serif;
-            position: relative;
-        }
-        h1 {
-            font-size: 5rem;
-            margin: 20px;
-            color: #00FFAB;
-            text-shadow: 0px 0px 10px rgba(0, 255, 171, 0.7);
-        }
-        button {
-            background-color: #1F1F1F;
-            color: #00FFAB;
-            border: 2px solid #00FFAB;
-            border-radius: 10px;
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        button:hover {
-            background-color: #00FFAB;
-            color: #121212;
-        }
-        #fullscreen-btn, #advanced-settings-btn {
-            position: absolute;
-            top: 10px;
-            font-size: 1.5rem;
-            padding: 5px 10px;
-            background: none;
-            border: none;
-            color: #00FFAB;
-            cursor: pointer;
-        }
-        #fullscreen-btn {
-            right: 10px;
-        }
-        #advanced-settings-btn {
-            left: 10px;
-            font-size: 1.8rem;
-        }
-        p {
-            font-size: 1.5rem;
-            margin: 20px;
-        }
-        #history {
-            margin-top: 30px;
-            font-size: 1.2rem;
-            color: #ffffff;
-            text-align: center;
-            max-width: 90%;
-            word-wrap: break-word;
-        }
-        .controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .label {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #00FFAB;
-        }
-        #advanced-settings {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-    </style>
+    <title>Random Number Picker - Catppuccin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/HubSpot/odometer/master/themes/odometer-theme-default.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.rawgit.com/HubSpot/odometer/master/odometer.js"></script>
 </head>
+
 <body>
+    <div class="accent-bar"></div>
+
+    <!-- Floating control buttons -->
     <button id="advanced-settings-btn" onclick="toggleAdvancedSettings()">
-        <i class="fas fa-cogs"></i> <!-- Gear icon -->
+        <i class="fas fa-cogs"></i>
     </button>
-    <button id="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
-    <h1 id="number">Nhấn nút!</h1>
-    <button onclick="pickNumber()">Chọn số</button>
-    <button onclick="reset()">Làm mới</button>
+    <button id="fullscreen-btn" onclick="toggleFullscreen()">
+        <i class="fas fa-expand"></i>
+    </button>
 
-    <div class="controls">
-        <button onclick="toggleAutoPick()">Tự động chọn</button>
-        <button onclick="changeInterval(-1)">-</button>
-        <span class="label" id="interval">3</span> giây
-        <button onclick="changeInterval(1)">+</button>
+    <!-- Settings backdrop -->
+    <div class="settings-backdrop" id="settings-backdrop" onclick="closeAdvancedSettings()"></div>
+
+    <div class="main-content">
+        <h1 id="number">Nhấn nút!</h1>
+        <div class="main-buttons">
+            <button class="primary-btn" onclick="pickNumber()"><i class="fas fa-dice"></i> Chọn số</button>
+        </div>
     </div>
 
+    <div class="controls-container">
+        <div id="history"></div>
+        <div class="controls">
+            <button onclick="toggleAutoPick()"><i class="fas fa-play"></i> Tự động chọn</button>
+            <div class="interval-controls">
+                <button onclick="changeInterval(-1)">-</button>
+                <span class="label" id="interval">3</span> giây
+                <button onclick="changeInterval(1)">+</button>
+            </div>
+            <button class="compact-reset-btn" onclick="reset()" title="Làm mới">
+                <i class="fas fa-refresh"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Advanced Settings Window -->
     <div id="advanced-settings">
-        <div class="controls">
-            <span class="label">Pitch:</span>
-            <button onclick="changePitch(-0.1)">-</button>
-            <span class="label" id="pitch">2</span>
-            <button onclick="changePitch(0.1)">+</button>
+        <div class="settings-header">
+            <h3 class="settings-title">
+                <i class="fas fa-sliders-h"></i> Cài đặt nâng cao
+            </h3>
+            <button class="close-btn" onclick="closeAdvancedSettings()">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
 
         <div class="controls">
-            <span class="label">Speed:</span>
-            <button onclick="changeSpeed(-0.1)">-</button>
+            <span class="label">
+                <i class="fas fa-volume-up"></i> Pitch:
+            </span>
+            <button onclick="changePitch(-0.1)">
+                <i class="fas fa-minus"></i>
+            </button>
+            <span class="label" id="pitch">2.0</span>
+            <button onclick="changePitch(0.1)">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+
+        <div class="controls">
+            <span class="label">
+                <i class="fas fa-tachometer-alt"></i> Speed:
+            </span>
+            <button onclick="changeSpeed(-0.1)">
+                <i class="fas fa-minus"></i>
+            </button>
             <span class="label" id="speed">1.2</span>
-            <button onclick="changeSpeed(0.1)">+</button>
+            <button onclick="changeSpeed(0.1)">
+                <i class="fas fa-plus"></i>
+            </button>
         </div>
 
         <div class="controls">
-            <form action="anim.html">
-              <button>Bật chuyển động</button>
-            </form>
+            <button class="animation-toggle" onclick="toggleAnimation()" id="animation-btn">
+                <i class="fas fa-magic"></i> Bật chuyển động
+            </button>
         </div>
     </div>
-
-    <div id="history"></div>
 
     <script>
         let availableNumbers = [...Array(90).keys()].map(n => n + 1);
@@ -135,56 +99,322 @@
         let intervalTime = 3;
         let pitch = 2;
         let speed = 1.2;
+        let animationEnabled = true;
+        let odometer = null;
+        let animationInProgress = false;
+
+        // Settings storage functions
+        function saveSettings() {
+            const settings = {
+                pitch: pitch,
+                speed: speed,
+                animationEnabled: animationEnabled,
+                intervalTime: intervalTime
+            };
+            localStorage.setItem('randomPickerSettings', JSON.stringify(settings));
+        }
+
+        function loadSettings() {
+            try {
+                const saved = localStorage.getItem('randomPickerSettings');
+                if (saved) {
+                    const settings = JSON.parse(saved);
+                    pitch = settings.pitch || 2;
+                    speed = settings.speed || 1.2;
+                    animationEnabled = settings.animationEnabled !== undefined ? settings.animationEnabled : true;
+                    intervalTime = settings.intervalTime || 3;
+                    
+                    // Update UI elements
+                    document.getElementById("pitch").textContent = pitch.toFixed(1);
+                    document.getElementById("speed").textContent = speed.toFixed(1);
+                    document.getElementById("interval").textContent = intervalTime;
+                    
+                    // Update animation button
+                    const animBtn = document.getElementById('animation-btn');
+                    if (animationEnabled) {
+                        animBtn.innerHTML = '<i class="fas fa-magic"></i> Tắt chuyển động';
+                        animBtn.classList.add('active');
+                    } else {
+                        animBtn.innerHTML = '<i class="fas fa-magic"></i> Bật chuyển động';
+                        animBtn.classList.remove('active');
+                    }
+                }
+            } catch (error) {
+                console.log('Error loading settings:', error);
+            }
+        }
 
         function loadVoices() {
             const voices = window.speechSynthesis.getVoices();
-            vietnameseVoice = voices.find(voice => voice.lang === 'vi-VN' && (voice.name.includes("Google") || voice.name.includes("happy")));
+            vietnameseVoice = voices.find(voice =>
+                voice.lang === 'vi-VN' &&
+                (voice.name.includes("Google") || voice.name.includes("happy"))
+            );
         }
+
         if (speechSynthesis.onvoiceschanged !== undefined) {
             speechSynthesis.onvoiceschanged = loadVoices;
         }
 
+        function initializeOdometer() {
+            const numberContainer = document.querySelector('.main-content');
+            const currentElement = document.getElementById('number');
+
+            if (animationEnabled && !odometer) {
+                // Check if we should start with "Nhấn nút!" or with 0
+                const shouldShowText = currentElement.textContent === "Nhấn nút!" || history.length === 0;
+
+                if (shouldShowText) {
+                    // Keep showing "Nhấn nút!" instead of switching to 0
+                    // Don't create odometer until first number is picked
+                    return;
+                } else {
+                    // Create fresh element for odometer
+                    const newElement = document.createElement('h1');
+                    newElement.id = 'number';
+                    newElement.classList.add('odometer');
+                    newElement.textContent = '0';
+
+                    // Replace the old element
+                    numberContainer.replaceChild(newElement, currentElement);
+
+                    odometer = new Odometer({
+                        el: newElement,
+                        value: 0,
+                        format: 'd',
+                        theme: 'default'
+                    });
+                }
+            } else if (!animationEnabled && odometer) {
+                // Create fresh element without odometer with smooth transition
+                const newElement = document.createElement('h1');
+                newElement.id = 'number';
+                newElement.textContent = "Nhấn nút!";
+                newElement.style.animation = 'textFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+
+                // Replace the old element completely
+                numberContainer.replaceChild(newElement, currentElement);
+
+                odometer = null;
+
+                // Clear animation after it completes
+                setTimeout(() => {
+                    newElement.style.animation = '';
+                }, 500);
+            }
+        }
+
+        function toggleAnimation() {
+            animationEnabled = !animationEnabled;
+            const btn = document.getElementById('animation-btn');
+
+            if (animationEnabled) {
+                btn.innerHTML = '<i class="fas fa-magic"></i> Tắt chuyển động';
+                btn.classList.add('active');
+                initializeOdometer();
+            } else {
+                btn.innerHTML = '<i class="fas fa-magic"></i> Bật chuyển động';
+                btn.classList.remove('active');
+                initializeOdometer();
+            }
+            saveSettings();
+        }
+
         function pickNumber() {
             if (availableNumbers.length === 0) {
-                document.getElementById("number").textContent = "Hết số rồi!";
+                const numberContainer = document.querySelector('.main-content');
+                const currentElement = document.getElementById("number");
+                const newElement = document.createElement('h1');
+                newElement.id = 'number';
+                newElement.textContent = "Hết số rồi!";
+
+                numberContainer.replaceChild(newElement, currentElement);
+                odometer = null;
                 return;
             }
+
             let index = Math.floor(Math.random() * availableNumbers.length);
             let chosen = availableNumbers.splice(index, 1)[0];
             history.push(chosen);
 
-            document.getElementById("number").textContent = chosen;
-            document.getElementById("history").textContent = `Lịch sử: ${history.join(', ')}`;
+            const numberElement = document.getElementById('number');
+
+            // Add pulse animation for visual feedback only if animation is disabled
+            if (!animationEnabled) {
+                numberElement.style.animation = 'numberPulse 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                setTimeout(() => {
+                    numberElement.style.animation = '';
+                }, 600);
+            }
+
+            if (animationEnabled) {
+                if (!odometer) {
+                    // First time picking with animation - create odometer now
+                    const numberContainer = document.querySelector('.main-content');
+                    const currentElement = document.getElementById('number');
+                    const newElement = document.createElement('h1');
+                    newElement.id = 'number';
+                    newElement.classList.add('odometer');
+                    newElement.textContent = '0';
+
+                    numberContainer.replaceChild(newElement, currentElement);
+
+                    odometer = new Odometer({
+                        el: newElement,
+                        value: 0,
+                        format: 'd',
+                        theme: 'default'
+                    });
+
+                    // Small delay to ensure odometer is ready
+                    setTimeout(() => {
+                        odometer.update(chosen);
+                    }, 50);
+                } else {
+                    odometer.update(chosen);
+                }
+            } else {
+                numberElement.textContent = chosen;
+            }
+
+            const historyElement = document.getElementById("history");
+
+            // Show history section if it's the first pick
+            if (!historyElement.classList.contains('show')) {
+                historyElement.classList.add('show');
+            }
+
+            historyElement.textContent = `Lịch sử: ${history.join(', ')}`;
+
             speakNumber(chosen);
         }
 
         function reset() {
+            console.log('reset called');
+            const autoPickBtn = document.querySelector('button[onclick="toggleAutoPick()"]');
+            const body = document.body;
+            const primaryBtn = document.querySelector('.primary-btn');
+
             clearInterval(autoPickInterval);
             autoPickInterval = null;
+            autoPickBtn.classList.remove('active');
+            autoPickBtn.innerHTML = '<i class="fas fa-play"></i> Tự động chọn';
+
+            // Exit presentation mode with smooth transition
+            body.classList.remove('presentation-mode');
+            if (primaryBtn && primaryBtn.classList.contains('hidden') && !animationInProgress) {
+                console.log('reset: showing button with CSS animation');
+                animationInProgress = true;
+                primaryBtn.classList.remove('hidden');
+                primaryBtn.classList.add('slide-in');
+                
+                // Clean up after animation
+                setTimeout(() => {
+                    primaryBtn.classList.remove('slide-in');
+                    animationInProgress = false;
+                    console.log('reset: animation completed');
+                }, 500);
+            } else {
+                console.log('reset: button not hidden or animation in progress, no animation needed');
+            }
+
             availableNumbers = [...Array(90).keys()].map(n => n + 1);
             history = [];
-            document.getElementById("number").textContent = "Nhấn nút!";
-            document.getElementById("history").textContent = "";
+
+            if (animationEnabled && odometer && history.length > 0) {
+                // If we have an active odometer with numbers, animate back to "Nhấn nút!"
+                // First scroll down to 0, then replace with text
+                odometer.update(0);
+
+                setTimeout(() => {
+                    // After animation completes, replace with "Nhấn nút!" text with fade-in animation
+                    const numberContainer = document.querySelector('.main-content');
+                    const currentElement = document.getElementById("number");
+                    const newElement = document.createElement('h1');
+                    newElement.id = 'number';
+                    newElement.textContent = "Nhấn nút!";
+                    newElement.style.animation = 'textFadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+
+                    numberContainer.replaceChild(newElement, currentElement);
+                    odometer = null;
+
+                    // Clear animation after it completes
+                    setTimeout(() => {
+                        newElement.style.animation = '';
+                    }, 600);
+                }, 1000); // Wait for odometer animation to complete
+            } else {
+                // For non-animated mode or fresh start, replace with subtle animation
+                const numberContainer = document.querySelector('.main-content');
+                const currentElement = document.getElementById("number");
+                const newElement = document.createElement('h1');
+                newElement.id = 'number';
+                newElement.textContent = "Nhấn nút!";
+                newElement.style.animation = 'textFadeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+
+                numberContainer.replaceChild(newElement, currentElement);
+                odometer = null;
+
+                // Clear animation after it completes
+                setTimeout(() => {
+                    newElement.style.animation = '';
+                }, 400);
+            }
+
+            const historyElement = document.getElementById("history");
+            historyElement.textContent = "";
+            historyElement.classList.remove('show');
         }
 
         function speakNumber(number) {
             const utterance = new SpeechSynthesisUtterance(number);
             utterance.lang = 'vi-VN';
-            utterance.pitch = pitch; 
-            utterance.rate = speed; 
+            utterance.pitch = pitch;
+            utterance.rate = speed;
             if (vietnameseVoice) utterance.voice = vietnameseVoice;
             window.speechSynthesis.speak(utterance);
         }
 
         function toggleAutoPick() {
+            console.log('toggleAutoPick called');
+            if (animationInProgress) {
+                console.log('toggleAutoPick: animation in progress, returning');
+                return; // Prevent double animations
+            }
+
+            const autoPickBtn = document.querySelector('button[onclick="toggleAutoPick()"]');
+            const body = document.body;
+            const primaryBtn = document.querySelector('.primary-btn');
+
             if (autoPickInterval) {
-                clearInterval(autoPickInterval);
-                autoPickInterval = null;
+                console.log('toggleAutoPick: stopping autopick');
+                // Stop auto pick using the shared function
+                stopAutoPick();
             } else {
+                console.log('toggleAutoPick: starting autopick');
+                // Start auto pick
+                autoPickBtn.classList.add('active');
+                autoPickBtn.innerHTML = '<i class="fas fa-stop"></i> Dừng tự động';
+
+                // Enter presentation mode with smooth transition
+                body.classList.add('presentation-mode');
+                if (primaryBtn && !primaryBtn.classList.contains('hidden')) {
+                    animationInProgress = true;
+                    primaryBtn.classList.add('slide-out');
+                    
+                    // Clean up after animation
+                    setTimeout(() => {
+                        primaryBtn.classList.add('hidden');
+                        primaryBtn.classList.remove('slide-out');
+                        animationInProgress = false;
+                    }, 400);
+                }
+
+                // Start the interval
                 autoPickInterval = setInterval(() => {
                     if (availableNumbers.length === 0) {
-                        clearInterval(autoPickInterval);
-                        autoPickInterval = null;
+                        console.log('toggleAutoPick interval: no numbers left, stopping');
+                        stopAutoPick();
                     } else {
                         pickNumber();
                     }
@@ -192,15 +422,52 @@
             }
         }
 
+        function stopAutoPick() {
+            console.log('stopAutoPick called');
+            if (!autoPickInterval) {
+                console.log('stopAutoPick: already stopped, returning');
+                return; // Already stopped
+            }
+
+            const autoPickBtn = document.querySelector('button[onclick="toggleAutoPick()"]');
+            const body = document.body;
+            const primaryBtn = document.querySelector('.primary-btn');
+
+            console.log('stopAutoPick: clearing interval and updating UI');
+            clearInterval(autoPickInterval);
+            autoPickInterval = null;
+            autoPickBtn.classList.remove('active');
+            autoPickBtn.innerHTML = '<i class="fas fa-play"></i> Tự động chọn';
+
+            // Exit presentation mode
+            body.classList.remove('presentation-mode');
+            if (primaryBtn && primaryBtn.classList.contains('hidden')) {
+                console.log('stopAutoPick: showing button with CSS animation');
+                animationInProgress = true;
+                primaryBtn.classList.remove('hidden');
+                primaryBtn.classList.add('slide-in');
+                
+                // Clean up after animation
+                setTimeout(() => {
+                    primaryBtn.classList.remove('slide-in');
+                    animationInProgress = false;
+                    console.log('stopAutoPick: animation completed');
+                }, 500);
+            } else {
+                console.log('stopAutoPick: button not hidden, no animation needed');
+            }
+        }
+
         function changeInterval(amount) {
             intervalTime = Math.max(1, intervalTime + amount);
             document.getElementById("interval").textContent = intervalTime;
+            saveSettings();
             if (autoPickInterval) {
                 clearInterval(autoPickInterval);
                 autoPickInterval = setInterval(() => {
                     if (availableNumbers.length === 0) {
-                        clearInterval(autoPickInterval);
-                        autoPickInterval = null;
+                        console.log('changeInterval interval: no numbers left, stopping');
+                        stopAutoPick();
                     } else {
                         pickNumber();
                     }
@@ -209,13 +476,15 @@
         }
 
         function changePitch(amount) {
-            pitch = Math.max(0, Math.min(2, pitch + amount)); // Cap to 2
+            pitch = Math.max(0, Math.min(2, pitch + amount));
             document.getElementById("pitch").textContent = pitch.toFixed(1);
+            saveSettings();
         }
 
         function changeSpeed(amount) {
-            speed = Math.max(0.5, Math.min(10, speed + amount)); // Limit between 0.5 and 10
+            speed = Math.max(0.5, Math.min(10, speed + amount));
             document.getElementById("speed").textContent = speed.toFixed(1);
+            saveSettings();
         }
 
         function toggleFullscreen() {
@@ -230,21 +499,75 @@
 
         function toggleAdvancedSettings() {
             const settings = document.getElementById("advanced-settings");
+            const backdrop = document.getElementById("settings-backdrop");
             const btn = document.getElementById("advanced-settings-btn");
-            const isSettingsVisible = settings.style.display === "flex";
+            const isSettingsVisible = settings.classList.contains('show');
+
             if (isSettingsVisible) {
-                settings.style.display = "none";
-                btn.innerHTML = '<i class="fas fa-cogs"></i>'; // Show gear icon
+                closeAdvancedSettings();
             } else {
-                settings.style.display = "flex";
-                btn.innerHTML = '<i class="fas fa-times"></i>'; // Show X icon
+                openAdvancedSettings();
             }
         }
 
-        // Ensure the settings are hidden on page load
+        function openAdvancedSettings() {
+            const settings = document.getElementById("advanced-settings");
+            const backdrop = document.getElementById("settings-backdrop");
+            const btn = document.getElementById("advanced-settings-btn");
+
+            backdrop.classList.add('show');
+            setTimeout(() => {
+                settings.classList.add('show');
+            }, 100);
+            btn.innerHTML = '<i class="fas fa-times"></i>';
+
+            // Add escape key listener
+            document.addEventListener('keydown', handleEscapeKey);
+        }
+
+        function closeAdvancedSettings() {
+            const settings = document.getElementById("advanced-settings");
+            const backdrop = document.getElementById("settings-backdrop");
+            const btn = document.getElementById("advanced-settings-btn");
+
+            settings.classList.remove('show');
+            setTimeout(() => {
+                backdrop.classList.remove('show');
+            }, 200);
+            btn.innerHTML = '<i class="fas fa-cogs"></i>';
+
+            // Remove escape key listener
+            document.removeEventListener('keydown', handleEscapeKey);
+        }
+
+        function handleEscapeKey(event) {
+            if (event.key === 'Escape') {
+                closeAdvancedSettings();
+            }
+        }
+
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById("advanced-settings").style.display = "none";
+            loadVoices();
+            loadSettings(); // Load saved settings
+
+            // Initialize odometer if animation was enabled
+            if (animationEnabled) {
+                initializeOdometer();
+            }
+
+            // Add smooth entrance animation for main elements
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+
+            // Add floating animation to floating buttons
+            const floatingButtons = document.querySelectorAll('#fullscreen-btn, #advanced-settings-btn');
+            floatingButtons.forEach((btn, index) => {
+                btn.style.animation = `floatIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) ${0.3 + index * 0.1}s both`;
+            });
         });
     </script>
 </body>
+
 </html>
