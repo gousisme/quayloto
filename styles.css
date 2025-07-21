@@ -673,8 +673,9 @@ body.presentation-mode .main-content {
     }
 
     h1 {
-        font-size: clamp(3rem, 15vw, 6rem);
+        font-size: clamp(3rem, 40vw, 10rem);
         margin: 40px 20px;
+        margin-top:-50%;
     }
 
     .controls {
@@ -692,6 +693,7 @@ body.presentation-mode .main-content {
         font-size: clamp(8rem, 50vw, 15rem);
         margin: 80px 10px;
         line-height: 0.8;
+        margin-top:-50%;
     }
 
     body.presentation-mode .main-content {
