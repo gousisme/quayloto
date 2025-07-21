@@ -69,6 +69,7 @@
         let speed = 1.2;
         let animationEnabled = true;
         let odometer = null;
+        let floatingNumbers = [];
 
         function saveSettings() {
             localStorage.setItem('settings', JSON.stringify({ pitch, speed, animationEnabled, intervalTime }));
@@ -133,7 +134,21 @@
 
         function pickNumber() {
             if (numbers.length === 0) {
-                document.getElementById("number").textContent = "Hết số rồi!";
+                const numberEl = document.getElementById("number");
+
+                if (animationEnabled && odometer) {
+                    // For odometer, we need to replace it with a regular element
+                    const container = document.querySelector('.main-content');
+                    const newEl = document.createElement('h1');
+                    newEl.id = 'number';
+                    newEl.textContent = "Hết số rồi!";
+                    newEl.style.animation = 'textFadeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    container.replaceChild(newEl, numberEl);
+                    odometer = null;
+                } else {
+                    // For regular display
+                    numberEl.textContent = "Hết số rồi!";
+                }
                 return;
             }
 
@@ -164,6 +179,9 @@
             const historyEl = document.getElementById("history");
             historyEl.classList.add('show');
             historyEl.textContent = `Lịch sử: ${history.join(', ')}`;
+
+            // Create floating number in background
+            createFloatingNumber(chosen);
 
             const utterance = new SpeechSynthesisUtterance(chosen);
             utterance.lang = 'vi-VN';
@@ -196,6 +214,102 @@
             odometer = null;
 
             document.getElementById("history").classList.remove('show');
+
+            // Remove all floating numbers
+            removeAllFloatingNumbers();
+        }
+
+        function createFloatingNumber(number) {
+            const floatingNumber = document.createElement('div');
+            floatingNumber.className = 'floating-number';
+            floatingNumber.textContent = number;
+
+            // Get main number position (center of screen)
+            const mainNumberRect = document.getElementById('number').getBoundingClientRect();
+            const mainNumberCenterX = mainNumberRect.left + mainNumberRect.width / 2;
+            const mainNumberCenterY = mainNumberRect.top + mainNumberRect.height / 2;
+
+            // Calculate safe zones (avoid center area where main number is)
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const safeZoneSize = Math.max(windowWidth, windowHeight) * 0.1; // 30% of screen size as safe zone
+
+            // Generate random position that avoids the main number
+            let x, y;
+            let attempts = 10; // Try up to 10 times to find a good position
+            do {
+                x = Math.random() * 80 + 10; // 10-90% of screen width
+                y = Math.random() * 80 + 10; // 10-90% of screen height
+
+                // Convert percentage to pixels for distance calculation
+                const pixelX = windowWidth * x / 100;
+                const pixelY = windowHeight * y / 100;
+
+                // Calculate distance from main number
+                const distance = Math.sqrt(
+                    Math.pow(pixelX - mainNumberCenterX, 2) +
+                    Math.pow(pixelY - mainNumberCenterY, 2)
+                );
+
+                // If distance is good, break the loop
+                if (distance > safeZoneSize) {
+                    break;
+                }
+
+                // Try up to 10 times, then just accept what we have
+                if (--attempts <= 0) {
+                    break;
+                }
+            } while (true);
+
+            // Random size - smaller for better background effect
+            const size = Math.random() * 5 + 3; // 3-8rem
+
+            // Random color from our palette
+            const colors = ['--mauve', '--pink', '--blue', '--green', '--teal', '--peach', '--yellow'];
+            const color = getComputedStyle(document.documentElement).getPropertyValue(colors[Math.floor(Math.random() * colors.length)]);
+
+            // Animation durations
+            const floatDuration = Math.random() * 15 + 15; // 15-30s for float animation
+            const appearDuration = 0.8; // Fixed appear animation duration
+
+            // Random initial rotation
+            const initialRotation = Math.floor(Math.random() * 360);
+
+            // Choose one of the three float animations randomly
+            const floatAnimations = ['float-1', 'float-2', 'float-3'];
+            const chosenAnimation = floatAnimations[Math.floor(Math.random() * floatAnimations.length)];
+
+            // Apply styles
+            floatingNumber.style.left = `${x}%`;
+            floatingNumber.style.top = `${y}%`;
+            floatingNumber.style.fontSize = `${size}rem`;
+            floatingNumber.style.color = color;
+            floatingNumber.style.transform = `rotate(${initialRotation}deg)`;
+
+            // Set animation name and duration
+            floatingNumber.style.animationName = `floatAppear, ${chosenAnimation}`;
+            floatingNumber.style.animationDuration = `${appearDuration}s, ${floatDuration}s`;
+
+            // Add a random delay to float animation but not to appear animation
+            floatingNumber.style.animationDelay = `0s, ${appearDuration}s`;
+
+            // Add to DOM
+            document.body.appendChild(floatingNumber);
+
+            // Store reference to remove later if needed
+            floatingNumbers.push(floatingNumber);
+
+            // Remove oldest floating number if we have too many
+            if (floatingNumbers.length > 50) {
+                const oldest = floatingNumbers.shift();
+                oldest.remove();
+            }
+        }
+
+        function removeAllFloatingNumbers() {
+            floatingNumbers.forEach(el => el.remove());
+            floatingNumbers = [];
         }
 
         function toggleAuto() {
@@ -287,6 +401,11 @@
             loadVoices();
             loadSettings();
             setTimeout(() => document.body.style.opacity = '1', 100);
+
+            // Create floating numbers for any existing history
+            if (history.length > 0) {
+                history.forEach(num => createFloatingNumber(num));
+            }
         });
     </script>
 </body>

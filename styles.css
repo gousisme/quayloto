@@ -63,6 +63,103 @@ body::before {
     z-index: -1;
 }
 
+.floating-number {
+    position: fixed;
+    color: var(--overlay0);
+    font-size: 8rem;
+    font-weight: 900;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(2px);
+    text-shadow: 0 0 20px var(--overlay1);
+    animation-fill-mode: forwards, none;
+    animation-timing-function: ease-out, linear;
+    animation-iteration-count: 1, infinite;
+    transform-origin: center center;
+}
+
+@keyframes floatAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.2) rotate(10deg);
+        filter: blur(10px);
+    }
+
+    100% {
+        opacity: 0.15;
+        transform: scale(1) rotate(0deg);
+        filter: blur(2px);
+    }
+}
+
+/* We'll use these keyframes as templates in JavaScript */
+@keyframes float-1 {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+
+    25% {
+        transform: translate(10px, -15px) rotate(15deg) scale(1.02);
+    }
+
+    50% {
+        transform: translate(5px, 10px) rotate(30deg) scale(0.98);
+    }
+
+    75% {
+        transform: translate(-10px, 5px) rotate(15deg) scale(1.01);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+}
+
+@keyframes float-2 {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+
+    25% {
+        transform: translate(-12px, -10px) rotate(-20deg) scale(0.98);
+    }
+
+    50% {
+        transform: translate(8px, 15px) rotate(-40deg) scale(1.03);
+    }
+
+    75% {
+        transform: translate(5px, -8px) rotate(-20deg) scale(0.99);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+}
+
+@keyframes float-3 {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+
+    25% {
+        transform: translate(15px, 10px) rotate(25deg) scale(1.01);
+    }
+
+    50% {
+        transform: translate(-5px, -12px) rotate(50deg) scale(0.97);
+    }
+
+    75% {
+        transform: translate(-12px, 8px) rotate(25deg) scale(1.02);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+}
+
 h1 {
     font-size: clamp(4rem, 12vw, 8rem);
     margin: 40px 20px;
@@ -682,7 +779,12 @@ body.presentation-mode .main-content {
     h1 {
         font-size: clamp(3rem, 40vw, 10rem);
         margin: 40px 20px;
-        margin-top: -300px !important;
+        margin-top: -200px !important;
+    }
+
+    /* Smaller text for messages on mobile */
+    h1.text-message {
+        font-size: clamp(2rem, 20vw, 4rem) !important;
     }
 
     .controls {
@@ -698,7 +800,7 @@ body.presentation-mode .main-content {
 
     body.presentation-mode h1 {
         font-size: clamp(8rem, 50vw, 15rem);
-        margin-top: -300px !important;
+        margin-top: -200px !important;
     }
 
     body.presentation-mode .main-content {
