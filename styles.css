@@ -215,8 +215,15 @@ button.active:hover {
 }
 
 @keyframes settingsRotate {
-    0%, 100% { transform: scale(1.15) rotate(0deg); }
-    50% { transform: scale(1.15) rotate(180deg); }
+
+    0%,
+    100% {
+        transform: scale(1.15) rotate(0deg);
+    }
+
+    50% {
+        transform: scale(1.15) rotate(180deg);
+    }
 }
 
 .controls-container {
@@ -675,7 +682,7 @@ body.presentation-mode .main-content {
     h1 {
         font-size: clamp(3rem, 40vw, 10rem);
         margin: 40px 20px;
-        margin-top:-50%;
+        margin-top: -300px !important;
     }
 
     .controls {
@@ -691,9 +698,7 @@ body.presentation-mode .main-content {
 
     body.presentation-mode h1 {
         font-size: clamp(8rem, 50vw, 15rem);
-        margin: 80px 10px;
-        line-height: 0.8;
-        margin-top:-50%;
+        margin-top: -300px !important;
     }
 
     body.presentation-mode .main-content {

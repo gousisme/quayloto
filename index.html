@@ -54,7 +54,7 @@
         </div>
         <div class="controls">
             <button class="animation-toggle" onclick="toggleAnimation()" id="animation-btn">
-                <i class="fas fa-magic"></i> Bật chuyển động
+                <i class="fas fa-magic"></i> Tắt chuyển động
             </button>
         </div>
     </div>
@@ -82,15 +82,15 @@
                 speed = settings.speed || 1.2;
                 animationEnabled = settings.animationEnabled !== false;
                 intervalTime = settings.intervalTime || 3;
-
-                document.getElementById("pitch").textContent = pitch.toFixed(1);
-                document.getElementById("speed").textContent = speed.toFixed(1);
-                document.getElementById("interval").textContent = intervalTime;
-
-                const btn = document.getElementById('animation-btn');
-                btn.innerHTML = animationEnabled ? '<i class="fas fa-magic"></i> Tắt chuyển động' : '<i class="fas fa-magic"></i> Bật chuyển động';
-                btn.classList.toggle('active', animationEnabled);
             }
+
+            document.getElementById("pitch").textContent = pitch.toFixed(1);
+            document.getElementById("speed").textContent = speed.toFixed(1);
+            document.getElementById("interval").textContent = intervalTime;
+
+            const btn = document.getElementById('animation-btn');
+            btn.innerHTML = animationEnabled ? '<i class="fas fa-magic"></i> Tắt chuyển động' : '<i class="fas fa-magic"></i> Bật chuyển động';
+            btn.classList.toggle('active', animationEnabled);
         }
 
         function loadVoices() {
