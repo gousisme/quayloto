@@ -1,6 +1,4 @@
-/* Catppuccin Color Scheme */
 :root {
-    /* Mocha theme (dark) */
     --rosewater: #f5e0dc;
     --flamingo: #f2cdcd;
     --pink: #f5c2e7;
@@ -27,8 +25,6 @@
     --base: #1e1e2e;
     --mantle: #181825;
     --crust: #11111b;
-
-    /* Modern design variables */
     --glass-bg: rgba(49, 50, 68, 0.8);
     --glass-border: rgba(108, 112, 134, 0.3);
     --shadow-light: rgba(203, 166, 247, 0.1);
@@ -43,15 +39,14 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
     background: linear-gradient(135deg, var(--base) 0%, var(--mantle) 50%, var(--crust) 100%);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     position: relative;
-    overflow-x: hidden;
+    overflow: hidden;
     opacity: 0;
     transition: opacity 0.6s ease-in-out;
-    padding: 20px 0;
 }
 
 body::before {
@@ -61,8 +56,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background:
-        radial-gradient(circle at 20% 80%, rgba(203, 166, 247, 0.1) 0%, transparent 50%),
+    background: radial-gradient(circle at 20% 80%, rgba(203, 166, 247, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(137, 180, 250, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 40% 40%, rgba(166, 227, 161, 0.05) 0%, transparent 50%);
     pointer-events: none;
@@ -72,18 +66,18 @@ body::before {
 h1 {
     font-size: clamp(4rem, 12vw, 8rem);
     margin: 40px 20px;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
     background: linear-gradient(135deg, var(--mauve), var(--pink), var(--blue));
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-size: 200% 200%;
     animation: gradientShift 4s ease-in-out infinite;
-    font-weight: 900;
-    text-align: center;
     filter: drop-shadow(0 6px 12px var(--shadow-light));
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    letter-spacing: -0.02em;
-    line-height: 0.9;
 }
 
 h1:hover {
@@ -114,14 +108,12 @@ button {
     margin: 10px;
     font-size: 1.1rem;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     font-weight: 600;
     position: relative;
     overflow: hidden;
-    box-shadow:
-        0 6px 20px var(--shadow-medium),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     flex-shrink: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 6px 20px var(--shadow-medium), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 button::before {
@@ -143,10 +135,8 @@ button:hover {
     background: rgba(203, 166, 247, 0.25);
     border-color: var(--mauve);
     transform: translateY(-4px) scale(1.02);
-    box-shadow:
-        0 12px 32px var(--shadow-light),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     color: var(--mauve);
+    box-shadow: 0 12px 32px var(--shadow-light), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 button:active {
@@ -154,43 +144,34 @@ button:active {
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Active auto pick button styling */
 button.active {
     background: linear-gradient(135deg, var(--green), var(--teal)) !important;
     border-color: var(--green) !important;
     color: var(--crust) !important;
-    box-shadow:
-        0 8px 24px rgba(166, 227, 161, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 24px rgba(166, 227, 161, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     animation: activePulse 2s ease-in-out infinite;
 }
 
 button.active:hover {
     background: linear-gradient(135deg, var(--teal), var(--green)) !important;
     transform: translateY(-4px) scale(1.02) !important;
-    box-shadow:
-        0 12px 32px rgba(166, 227, 161, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 12px 32px rgba(166, 227, 161, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
 }
 
 @keyframes activePulse {
 
     0%,
     100% {
-        box-shadow:
-            0 8px 24px rgba(166, 227, 161, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 24px rgba(166, 227, 161, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
     50% {
-        box-shadow:
-            0 12px 32px rgba(166, 227, 161, 0.6),
-            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        box-shadow: 0 12px 32px rgba(166, 227, 161, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 }
 
 #fullscreen-btn,
-#advanced-settings-btn {
+#settings-btn {
     position: fixed;
     top: 24px;
     font-size: 1.5rem;
@@ -207,60 +188,35 @@ button.active:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow:
-        0 8px 24px var(--shadow-medium),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     z-index: 1000;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 24px var(--shadow-medium), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 #fullscreen-btn {
     right: 24px;
 }
 
-#advanced-settings-btn {
+#settings-btn {
     left: 24px;
 }
 
 #fullscreen-btn:hover,
-#advanced-settings-btn:hover {
+#settings-btn:hover {
     background: rgba(203, 166, 247, 0.25);
     border-color: var(--mauve);
     color: var(--mauve);
     transform: scale(1.15) rotate(5deg);
-    box-shadow:
-        0 12px 32px var(--shadow-light),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 32px var(--shadow-light), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-#advanced-settings-btn:hover {
+#settings-btn:hover {
     animation: settingsRotate 0.6s ease-in-out;
 }
 
 @keyframes settingsRotate {
-
-    0%,
-    100% {
-        transform: scale(1.15) rotate(0deg);
-    }
-
-    25% {
-        transform: scale(1.15) rotate(90deg);
-    }
-
-    50% {
-        transform: scale(1.15) rotate(180deg);
-    }
-
-    75% {
-        transform: scale(1.15) rotate(270deg);
-    }
-}
-
-p {
-    font-size: 1.5rem;
-    margin: 20px;
-    color: var(--subtext1);
+    0%, 100% { transform: scale(1.15) rotate(0deg); }
+    50% { transform: scale(1.15) rotate(180deg); }
 }
 
 .controls-container {
@@ -285,12 +241,10 @@ p {
     background: var(--glass-bg);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    padding: 16px 24px 16px 24px;
+    padding: 16px 24px;
     border-radius: 24px;
     border: 1px solid var(--glass-border);
-    box-shadow:
-        0 6px 20px var(--shadow-medium),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 20px var(--shadow-medium), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     min-height: 32px;
     display: flex;
@@ -298,27 +252,20 @@ p {
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transform: scale(0.1);
-    transform-origin: center center;
+    transform: translateY(20px) scale(0.9);
     pointer-events: none;
-    position: absolute;
-    top: -8px;
-    left: 0;
-    right: 0;
-    z-index: 999;
+    margin-bottom: 16px;
 }
 
 #history.show {
     opacity: 1;
     visibility: visible;
-    transform: scale(1);
+    transform: translateY(0) scale(1);
     pointer-events: auto;
 }
 
 #history:hover {
-    box-shadow:
-        0 12px 32px var(--shadow-light),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 32px var(--shadow-light), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .controls {
@@ -331,9 +278,7 @@ p {
     padding: 16px 24px;
     border-radius: 24px;
     border: 1px solid var(--glass-border);
-    box-shadow:
-        0 8px 24px var(--shadow-medium),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 24px var(--shadow-medium), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     width: 100%;
     z-index: 1000;
@@ -349,19 +294,10 @@ p {
 }
 
 .controls:hover {
-    box-shadow:
-        0 12px 32px var(--shadow-light),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 32px var(--shadow-light), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.label {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--mauve);
-}
-
-/* Floating Advanced Settings Window */
-#advanced-settings {
+#settings {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -375,26 +311,24 @@ p {
     border: 1px solid var(--glass-border);
     border-radius: 28px;
     padding: 36px;
-    box-shadow:
-        0 25px 50px var(--shadow-heavy),
-        0 0 0 1px rgba(203, 166, 247, 0.1),
+    box-shadow: 0 25px 50px var(--shadow-heavy), 0 0 0 1px rgba(203, 166, 247, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     z-index: 2000;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     overflow-y: auto;
     filter: blur(10px);
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-#advanced-settings.show {
+#settings.show {
     opacity: 1;
     visibility: visible;
     transform: translate(-50%, -50%) scale(1);
     filter: blur(0px);
 }
 
-#advanced-settings .settings-header {
+#settings .settings-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -404,7 +338,7 @@ p {
     position: relative;
 }
 
-#advanced-settings .settings-header::after {
+#settings .settings-header::after {
     content: '';
     position: absolute;
     bottom: -1px;
@@ -415,11 +349,11 @@ p {
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#advanced-settings.show .settings-header::after {
+#settings.show .settings-header::after {
     width: 100%;
 }
 
-#advanced-settings .settings-title {
+#settings h3 {
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--text);
@@ -433,7 +367,7 @@ p {
     gap: 12px;
 }
 
-#advanced-settings .close-btn {
+#settings .settings-header button {
     background: rgba(243, 139, 168, 0.2);
     border: 1px solid rgba(243, 139, 168, 0.3);
     color: var(--red);
@@ -450,51 +384,32 @@ p {
     box-shadow: 0 2px 8px rgba(243, 139, 168, 0.2);
 }
 
-#advanced-settings .close-btn:hover {
+#settings .settings-header button:hover {
     background: rgba(243, 139, 168, 0.4);
     transform: scale(1.15) rotate(90deg);
     box-shadow: 0 4px 16px rgba(243, 139, 168, 0.4);
 }
 
-#advanced-settings .controls {
+#settings .controls {
     margin: 20px 0;
     background: rgba(69, 71, 90, 0.6);
     border: 1px solid rgba(108, 112, 134, 0.3);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     width: auto;
     max-width: 100%;
     box-sizing: border-box;
 }
 
-#advanced-settings .controls:hover {
+#settings .controls:hover {
     background: rgba(69, 71, 90, 0.8);
     border-color: rgba(203, 166, 247, 0.4);
     transform: translateY(-1px);
-    box-shadow:
-        0 6px 16px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Ensure advanced settings controls don't overflow on small screens */
-@media (max-width: 480px) {
-    #advanced-settings {
-        width: 80%;
-        padding: 24px;
-    }
-
-    #advanced-settings .controls {
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: center;
-    }
-}
-
-/* Backdrop overlay */
 .settings-backdrop {
     position: fixed;
     top: 0;
@@ -515,7 +430,6 @@ p {
     visibility: visible;
 }
 
-/* Animation toggle button styling */
 .animation-toggle {
     background: linear-gradient(135deg, var(--pink), var(--mauve));
     color: var(--crust);
@@ -524,6 +438,10 @@ p {
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 16px rgba(245, 194, 231, 0.3);
+    border-radius: 18px !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 14px 28px !important;
 }
 
 .animation-toggle::before {
@@ -534,6 +452,7 @@ p {
     background: linear-gradient(135deg, var(--mauve), var(--pink));
     color: var(--crust);
     box-shadow: 0 8px 24px rgba(245, 194, 231, 0.4);
+    transform: translateY(-4px) scale(1.02) !important;
 }
 
 .animation-toggle.active {
@@ -544,9 +463,13 @@ p {
 .animation-toggle.active:hover {
     background: linear-gradient(135deg, var(--teal), var(--green));
     box-shadow: 0 8px 24px rgba(166, 227, 161, 0.4);
+    transform: translateY(-4px) scale(1.02) !important;
 }
 
-/* Odometer styling for Catppuccin theme */
+.animation-toggle i {
+    margin-right: 8px;
+}
+
 .odometer {
     background: linear-gradient(135deg, var(--mauve), var(--pink), var(--blue)) !important;
     background-clip: text !important;
@@ -560,35 +483,12 @@ p {
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
     text-rendering: optimizeLegibility !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
-.odometer .odometer-digit {
-    background: linear-gradient(135deg, var(--mauve), var(--pink), var(--blue)) !important;
-    background-clip: text !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-size: 200% 200% !important;
-    font-weight: 900 !important;
-}
-
-.odometer .odometer-digit .odometer-digit-spacer {
-    background: linear-gradient(135deg, var(--mauve), var(--pink), var(--blue)) !important;
-    background-clip: text !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-size: 200% 200% !important;
-    font-weight: 900 !important;
-}
-
-.odometer .odometer-digit .odometer-digit-inner {
-    background: linear-gradient(135deg, var(--mauve), var(--pink), var(--blue)) !important;
-    background-clip: text !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-size: 200% 200% !important;
-    font-weight: 900 !important;
-}
-
+.odometer .odometer-digit,
+.odometer .odometer-digit .odometer-digit-spacer,
+.odometer .odometer-digit .odometer-digit-inner,
 .odometer .odometer-value {
     background: linear-gradient(135deg, var(--mauve), var(--pink), var(--blue)) !important;
     background-clip: text !important;
@@ -596,49 +496,25 @@ p {
     -webkit-text-fill-color: transparent !important;
     background-size: 200% 200% !important;
     font-weight: 900 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
-/* Custom scrollbar for advanced settings */
-#advanced-settings::-webkit-scrollbar {
+#settings::-webkit-scrollbar {
     width: 8px;
 }
 
-#advanced-settings::-webkit-scrollbar-track {
+#settings::-webkit-scrollbar-track {
     background: var(--surface0);
     border-radius: 4px;
 }
 
-#advanced-settings::-webkit-scrollbar-thumb {
+#settings::-webkit-scrollbar-thumb {
     background: var(--overlay0);
     border-radius: 4px;
 }
 
-#advanced-settings::-webkit-scrollbar-thumb:hover {
+#settings::-webkit-scrollbar-thumb:hover {
     background: var(--overlay1);
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    h1 {
-        font-size: 3rem;
-    }
-
-    .controls {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    #history {
-        font-size: 1rem;
-        padding: 10px;
-    }
-}
-
-/* Accent bar animation */
-@keyframes gradient {
-    to {
-        background-position: right;
-    }
 }
 
 .accent-bar {
@@ -647,18 +523,21 @@ p {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg,
-            var(--rosewater), var(--flamingo), var(--pink), var(--mauve),
-            var(--red), var(--maroon), var(--peach), var(--yellow),
-            var(--green), var(--teal), var(--sky), var(--sapphire),
-            var(--blue), var(--lavender));
+    z-index: 1000;
+    background: linear-gradient(90deg, var(--rosewater), var(--flamingo), var(--pink), var(--mauve),
+            var(--red), var(--maroon), var(--peach), var(--yellow), var(--green), var(--teal),
+            var(--sky), var(--sapphire), var(--blue), var(--lavender));
     background-size: 400% 100%;
     background-position: left;
     animation: gradient 20s linear infinite forwards;
-    z-index: 1000;
 }
 
-/* Additional animations */
+@keyframes gradient {
+    to {
+        background-position: right;
+    }
+}
+
 @keyframes numberPulse {
     0% {
         transform: scale(1);
@@ -671,47 +550,6 @@ p {
 
     100% {
         transform: scale(1);
-    }
-}
-
-@keyframes slideInUp {
-    0% {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes floatIn {
-    0% {
-        transform: translateY(30px) scale(0.9);
-        opacity: 0;
-    }
-
-    100% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-}
-
-@keyframes historyExpand {
-    0% {
-        transform: scale(1) translateY(0);
-    }
-
-    50% {
-        transform: scale(1.05) translateY(-2px);
-        box-shadow:
-            0 15px 40px var(--shadow-light),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    }
-
-    100% {
-        transform: scale(1) translateY(0);
     }
 }
 
@@ -735,86 +573,12 @@ p {
     }
 }
 
-@keyframes slideOutToBottom {
-    0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-
-    100% {
-        opacity: 0;
-        transform: translateY(60px) scale(0.9);
-    }
-}
-
-@keyframes slideInFromBottom {
-    0% {
-        opacity: 0;
-        transform: translateY(60px) scale(0.9);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Staggered animation for controls */
-.controls:nth-child(1) {
-    animation: floatIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
-}
-
-.controls:nth-child(2) {
-    animation: floatIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
-}
-
-.controls:nth-child(3) {
-    animation: floatIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
-}
-
-/* Improved glass morphism effect */
-.controls,
-#history {
-    position: relative;
-}
-
-.controls::before,
-#history::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg,
-            rgba(255, 255, 255, 0.1) 0%,
-            rgba(255, 255, 255, 0.05) 50%,
-            rgba(255, 255, 255, 0.02) 100%);
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.controls:hover::before,
-#history:hover::before {
-    opacity: 1;
-}
-
-/* Main content container */
 .main-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
     margin-bottom: 20px;
-}
-
-.main-buttons {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
 }
 
 .primary-btn {
@@ -824,21 +588,14 @@ p {
     font-size: 1.3rem !important;
     padding: 18px 36px !important;
     font-weight: 700 !important;
-    box-shadow:
-        0 8px 24px rgba(203, 166, 247, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 24px rgba(203, 166, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .primary-btn:hover {
     background: linear-gradient(135deg, var(--pink), var(--mauve)) !important;
     transform: translateY(-5px) scale(1.05) !important;
-    box-shadow:
-        0 15px 40px rgba(203, 166, 247, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
-}
-
-.primary-btn {
-    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 15px 40px rgba(203, 166, 247, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
 }
 
 .primary-btn.hidden {
@@ -847,27 +604,6 @@ p {
     transform: translateY(60px) scale(0.9);
 }
 
-.primary-btn.slide-out {
-    animation: slideOutToBottom 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.primary-btn.slide-in {
-    animation: slideInFromBottom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.secondary-btn {
-    background: rgba(69, 71, 90, 0.8) !important;
-    border-color: var(--overlay0) !important;
-    color: var(--subtext1) !important;
-}
-
-.secondary-btn:hover {
-    background: rgba(69, 71, 90, 1) !important;
-    border-color: var(--overlay1) !important;
-    color: var(--text) !important;
-}
-
-/* Presentation Mode - Auto Pick Active */
 body.presentation-mode h1 {
     font-size: clamp(6rem, 20vw, 12rem);
     margin: 60px 20px;
@@ -893,8 +629,7 @@ body.presentation-mode .main-content {
     }
 }
 
-/* Compact reset button */
-.compact-reset-btn {
+.reset-btn {
     background: rgba(243, 139, 168, 0.2) !important;
     border: 1px solid rgba(243, 139, 168, 0.3) !important;
     color: var(--red) !important;
@@ -909,22 +644,35 @@ body.presentation-mode .main-content {
     font-size: 1rem !important;
 }
 
-.compact-reset-btn:hover {
+.reset-btn:hover {
     background: rgba(243, 139, 168, 0.4) !important;
     transform: translateY(-2px) scale(1.1) !important;
     box-shadow: 0 6px 20px rgba(243, 139, 168, 0.4) !important;
     color: var(--red) !important;
 }
 
-/* Mobile presentation mode - even bigger numbers */
 @media (max-width: 768px) {
+    h1 {
+        font-size: 3rem;
+    }
+
+    .controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #history {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
     body.presentation-mode h1 {
         font-size: clamp(8rem, 50vw, 15rem);
         margin: 80px 10px;
         line-height: 0.8;
     }
 
-    body .controls-container {
+    .controls-container {
         bottom: 20px;
         width: calc(100% - 60px);
     }
@@ -937,13 +685,11 @@ body.presentation-mode .main-content {
         font-size: clamp(8rem, 30vw, 15rem);
     }
 
-    #advanced-settings{
+    #settings {
         width: 80%;
     }
-
 }
 
-/* Desktop presentation mode - moderately bigger */
 @media (min-width: 769px) {
     body.presentation-mode h1 {
         font-size: clamp(8rem, 50vw, 15rem);
